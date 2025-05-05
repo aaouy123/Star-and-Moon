@@ -41,7 +41,7 @@ dns:
   respect-rules: true
   listen: 0.0.0.0:53
   ipv6: true
-  enhanced-mode: redir-host
+  enhanced-mode: fake-ip # redir-host/fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
@@ -117,7 +117,7 @@ proxy-providers:
       url: https://www.google.com/generate_204
       interval: 600
       timeout: 5000
-      lazy:true: null
+      lazy: true
       expected-status: 204
     url: ""
     path: ./proxy_providers/provider_subscribe1.yaml
@@ -129,7 +129,7 @@ proxy-providers:
       url: https://www.google.com/generate_204
       interval: 600
       timeout: 5000
-      lazy:true: null
+      lazy: true
       expected-status: 204
     url: ""
     path: ./proxy_providers/provider_subscribe2.yaml
