@@ -1,0 +1,737 @@
+mode: rule
+mixed-port: 10801
+allow-lan: false
+log-level: info
+ipv6: true
+secret: ""
+external-controller: 127.0.0.1:9090
+find-process-mode: strict
+unified-delay: false
+tcp-concurrent: true
+keep-alive-interval: 30
+global-client-fingerprint: chrome
+profile:
+  store-selected: true
+  store-fake-ip: true
+geox-url:
+  geoip: "https://github.moeyy.xyz/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://github.moeyy.xyz/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb"
+  asn: "https://raw.githubusercontent.com/xishang0128/geoip/release/GeoLite2-ASN.mmdb"
+geodata-mode: true
+geodata-loader: memconservative
+geo-auto-update: true
+geo-update-interval: 24
+global-ua: clash.meta
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: false
+dns:
+  enable: true
+  cache-algorithm: arc
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: true
+  listen: 0.0.0.0:53
+  ipv6: true
+  enhanced-mode: redir-host
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "geosite:private,cn"
+    - "geosite:googlefcm"
+  default-nameserver:
+    - 223.5.5.5
+    - 120.53.53.53
+  nameserver:
+    - https://dns.cloudflare.com/dns-query
+    - https://94.140.14.14/dns-query#h3=true
+  nameserver-policy:
+    geosite:googlefcm:
+      - https://223.5.5.5/dns-query
+      - https://120.53.53.53/dns-query
+    rule-set:Lan_blackmatrix7:
+      - https://223.5.5.5/dns-query
+      - https://120.53.53.53/dns-query
+    "geosite:cn,private":
+      - https://223.6.6.6/dns-query
+      - https://120.53.53.53/dns-query
+    "geosite:gfw,geolocation-!cn":
+      - https://dns.cloudflare.com/dns-query
+      - https://94.140.14.14/dns-query#h3=true
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://120.53.53.53/dns-query
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  direct-nameserver-follow-policy: false
+sniffer:
+  enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    TLS:
+      ports:
+        - 443
+        - 5228
+        - 8443
+    HTTP:
+      ports:
+        - 80
+        - 8080-8880
+      override-destination: true
+    QUIC:
+      ports:
+        - 443
+        - 5228
+        - 8443
+  force-domain:
+    - "+.v2ex.com"
+    - "geosite:googlefcm"
+    - "google.com"
+  skip-domain:
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.apple.com"
+proxies:
+  - name: dns-out
+    type: dns
+    udp: true
+proxy-providers:
+  1.provider:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.google.com/generate_204
+      interval: 600
+      timeout: 5000
+      lazy:true: null
+      expected-status: 204
+    url: ""
+    path: ./proxy_providers/provider_subscribe1.yaml
+  2.provider:
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.google.com/generate_204
+      interval: 600
+      timeout: 5000
+      lazy:true: null
+      expected-status: 204
+    url: ""
+    path: ./proxy_providers/provider_subscribe2.yaml
+proxy-groups:
+  - name: 🌟 总模式
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - ✨ 负载均衡
+      - 🔗 链式代理
+      - provider_one
+      - provider_two
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 🚀 节点选择
+    type: select
+    proxies:
+      - 🪐 自动切换
+      - 🌎 全球直连
+    include-all-providers: true
+  - name: 🪐 自动切换
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    filter: (?i)^(?!.*emby).*
+  - name: ☀️ 手动切换1
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🌎 全球直连
+    include-all-providers: true
+  - name: 🌙 手动切换2
+    type: select
+    proxies:
+      - 🚀 节点选择
+      - 🌎 全球直连
+    include-all-providers: true
+  - name: ✨ 负载均衡
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    proxies:
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+  - name: 🔗 链式代理
+    type: select
+    proxies:
+      - 链式星舰
+      - 链式日月
+  - name: provider_one
+    type: select
+    use:
+      - 1.provider
+  - name: provider_two
+    type: select
+    use:
+      - 2.provider
+  - name: 🤖 AI
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 📲 Telegram
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 🍦 YouTube
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 🍿 Netflix
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 🧋 Bilibili
+    type: select
+    proxies:
+      - 🌟 总模式
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+  - name: 🍨 EMBY
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇺🇳 其它地区
+    include-all-providers: true
+    filter: (?i)emby|plex|media
+  - name: 📸 TikTok
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: ✈️ Twitter
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 📢 Google
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 🎮 Discord
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🪐 自动切换
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+      - 🌎 全球直连
+      - 🇭🇰 香港
+      - 🇨🇳 台湾
+      - 🇯🇵 日本
+      - 🇸🇬 新加坡
+      - 🇺🇸 美国
+      - 🇺🇳 其它地区
+  - name: 📟 WebRTC
+    type: select
+    proxies:
+      - REJECT
+      - REJECT-DROP
+      - PASS
+  - name: 🧩 HTTP_DNS
+    type: select
+    proxies:
+      - REJECT
+      - REJECT-DROP
+      - PASS
+  - name: 🛑 隐私拦截
+    type: select
+    proxies:
+      - REJECT
+      - REJECT-DROP
+      - PASS
+      - 🌟 总模式
+      - 🌎 全球直连
+  - name: 🐋 漏网之鱼
+    type: select
+    proxies:
+      - 🌟 总模式
+      - 🌎 全球直连
+  - name: 🌎 全球直连
+    type: select
+    proxies:
+      - DIRECT
+  - name: 🇭🇰 香港
+    type: select
+    proxies:
+      - 香港延时选优组
+      - 香港故障转移组
+      - 香港负载均衡组
+  - name: 🇨🇳 台湾
+    type: select
+    proxies:
+      - 台湾延时选优组
+      - 台湾故障转移组
+      - 台湾负载均衡组
+  - name: 🇯🇵 日本
+    type: select
+    proxies:
+      - 日本延时选优组
+      - 日本故障转移组
+      - 日本负载均衡组
+  - name: 🇸🇬 新加坡
+    type: select
+    proxies:
+      - 新加坡延时选优组
+      - 新加坡故障转移组
+      - 新加坡负载均衡组
+  - name: 🇺🇸 美国
+    type: select
+    proxies:
+      - 美国延时选优组
+      - 美国故障转移组
+      - 美国负载均衡组
+  - name: 🇺🇳 其它地区
+    type: select
+    include-all-providers: true
+    filter: (?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|emby)).*|.*(?:澳大利亚|australia)
+  - name: 香港延时选优组
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:港|hk|hongkong|hong\s+kong))(?!.*(?:emby.*hk|hk.*emby))(?!.*(?:5x|专线|premium))
+  - name: 台湾延时选优组
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:台|tw|taiwan))(?!.*(?:5x|专线|premium))
+  - name: 日本延时选优组
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:日|jp|japan))(?!.*(?:5x|专线|premium))
+  - name: 新加坡延时选优组
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:新|sg|singapore))(?!.*(?:5x|专线|premium))
+  - name: 美国延时选优组
+    type: url-test
+    url: https://www.google.com/generate_204
+    interval: 300
+    tolerance: 20
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:美|\bus\b|united\s*states))(?!.*(?:澳大利亚|australia))(?!.*(?:5x|专线|premium))
+  - name: 香港故障转移组
+    type: fallback
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:港|hk|hongkong|hong\s+kong))(?!.*(?:emby.*hk|hk.*emby))(?!.*(?:5x|专线|premium))
+  - name: 台湾故障转移组
+    type: fallback
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:台|tw|taiwan))(?!.*(?:5x|专线|premium))
+  - name: 日本故障转移组
+    type: fallback
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:日|jp|japan))(?!.*(?:5x|专线|premium))
+  - name: 新加坡故障转移组
+    type: fallback
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:新|sg|singapore))(?!.*(?:5x|专线|premium))
+  - name: 美国故障转移组
+    type: fallback
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:美|\bus\b|united\s*states))(?!.*(?:澳大利亚|australia))(?!.*(?:5x|专线|premium))
+  - name: 香港负载均衡组
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    strategy: consistent-hashing
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:港|hk|hongkong|hong\s+kong))(?!.*(?:emby.*hk|hk.*emby))(?!.*(?:5x|专线|premium))
+  - name: 台湾负载均衡组
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    strategy: consistent-hashing
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)台|tw|taiwan
+  - name: 日本负载均衡组
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    strategy: consistent-hashing
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:日|jp|japan))(?!.*(?:5x|专线|premium))
+  - name: 新加坡负载均衡组
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    strategy: consistent-hashing
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:新|sg|singapore))(?!.*(?:5x|专线|premium))
+  - name: 美国负载均衡组
+    type: load-balance
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    strategy: consistent-hashing
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    include-all-providers: true
+    hidden: true
+    filter: (?i)(?=.*(?:美|\bus\b|united\s*states))(?!.*(?:澳大利亚|australia))(?!.*(?:5x|专线|premium))
+  - name: 链式星舰
+    type: relay
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    hidden: true
+    proxies:
+      - 🚀 节点选择
+      - ✨ 负载均衡
+  - name: 链式日月
+    type: relay
+    url: https://www.google.com/generate_204
+    interval: 300
+    lazy: true
+    timeout: 2000
+    max-failed-times: 5
+    expected-status: 204
+    hidden: true
+    proxies:
+      - ☀️ 手动切换1
+      - 🌙 手动切换2
+rule-providers:
+  Telegram:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/Telegram.yaml
+    url: "https://raw.githubusercontent.com/MoGuangYu/rules/main/Home/Telegram.yaml"
+  Youtube:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/Youtube.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.yaml"
+  Google:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/Google.yaml
+    url: "https://raw.githubusercontent.com/MoGuangYu/rules/main/Home/Google.yaml"
+  Netflix:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/Netflix.yaml
+    url: "https://raw.githubusercontent.com/MoGuangYu/rules/main/Home/Netflix.yaml"
+  Discord:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/Discord.yaml
+    url: "https://raw.githubusercontent.com/MoGuangYu/rules/main/Home/Discord.yaml"
+  BiliBili:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/BiliBili.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BiliBili/BiliBili.yaml"
+  EMBY:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/EMBY.yaml
+    url: "https://raw.githubusercontent.com/aaouy123/copilot-/main/emby.yaml"
+  TikTok:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/TikTok.yaml
+    url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.yaml"
+  AI:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: yaml
+    path: ./rule/AI.yaml
+    url: "https://raw.githubusercontent.com/aaouy123/copilot-/refs/heads/main/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A7%84%E5%88%99%E9%9B%86.yaml"
+  reject_non_ip:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: text
+    url: "https://ruleset.skk.moe/Clash/non_ip/reject.txt"
+    path: ./sukkaw_ruleset/reject_non_ip.txt
+  reject_domainset:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: text
+    url: "https://ruleset.skk.moe/Clash/domainset/reject.txt"
+    path: ./sukkaw_ruleset/reject_domainset.txt
+  reject_ip:
+    type: http
+    interval: 86400
+    behavior: classical
+    format: text
+    url: "https://ruleset.skk.moe/Clash/ip/reject.txt"
+    path: ./sukkaw_ruleset/reject_ip.txt
+  Lan_blackmatrix7:
+    type: http
+    interval: 86400
+    behavior: classical
+    url: "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan.yaml"
+    path: ./rule/Lan_blackmatrix7.yaml
+  site_category-httpdns:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+    path: ./rule_providers/domain/category-httpdns
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/httpdns.mrs"
+  site_category-httpdns-cn:
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+    path: ./rule_providers/domain/category-httpdns-cn
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-httpdns-cn.mrs"
+rules:
+  - DST-PORT,53,dns-out
+  - OR,((GEOSITE,private),(GEOIP,private,no-resolve)),DIRECT
+  - RULE-SET,Lan_blackmatrix7,DIRECT
+  - OR,((RULE-SET,site_category-httpdns),(RULE-SET,site_category-httpdns-cn),(DOMAIN-KEYWORD,httpdns)),🧩
+    HTTP_DNS
+  - AND,((GEOSITE,googlefcm),(DST-PORT,5228-5230)),DIRECT
+  - RULE-SET,reject_non_ip,🛑 隐私拦截
+  - RULE-SET,reject_domainset,🛑 隐私拦截
+  - RULE-SET,reject_ip,🛑 隐私拦截
+  - AND,((NETWORK,udp),(DOMAIN-REGEX,(?i)stun|turn)),📟 WebRTC
+  - RULE-SET,Telegram,📲 Telegram
+  - DOMAIN,api.iturrit.com,📲 Telegram
+  - RULE-SET,AI,🤖 AI
+  - RULE-SET,Youtube,🍦 YouTube
+  - RULE-SET,Netflix,🍿 Netflix
+  - RULE-SET,Discord,🎮 Discord
+  - RULE-SET,BiliBili,🧋 Bilibili
+  - RULE-SET,EMBY,🍨 EMBY
+  - RULE-SET,TikTok,📸 TikTok
+  - GEOSITE,twitter,✈️ Twitter
+  - GEOIP,twitter,✈️ Twitter
+  - RULE-SET,Google,📢 Google
+  - GEOSITE,gfw,🌟 总模式
+  - GEOSITE,geolocation-!cn,🌟 总模式
+  - GEOSITE,cn,DIRECT
+  - GEOIP,cn,DIRECT,no-resolve
+  - MATCH,🐋 漏网之鱼
