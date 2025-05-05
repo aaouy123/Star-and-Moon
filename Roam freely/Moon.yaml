@@ -151,31 +151,31 @@ Strategy-providers-anchor:
 #>>>>>>>>>>>>>>>>>
 ##### 代理组
 proxy-groups:
-  - {name: 🌟 总模式, type: select, proxies: [🚀 节点选择,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,✨ 负载均衡,🔗 链式代理,provider_one,provider_two,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 🚀 节点选择, type: select, proxies: [🪐 自动切换,🌎 全球直连], <<: *u}
-  - {name: 🪐 自动切换, type: url-test, tolerance: 20, <<: *u, filter: "(?i)^(?!.*emby).*"}
-  - {name: ☀️ 手动切换1, type: select, proxies: [🚀 节点选择,🌎 全球直连], <<: *u}
-  - {name: 🌙 手动切换2, type: select, proxies: [🚀 节点选择,🌎 全球直连], <<: *u}
-  - {name: ✨ 负载均衡, <<: *load-balance-consistent-hashing-Strategy, proxies: [🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国]}
-  - {name: 🔗 链式代理, <<: *relay-Strategy, proxies: [☀️ 手动切换1,🌙 手动切换2]}
+  - {name: 🌟 总模式, type: select, proxies: [🚀 节点选择, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, ✨ 负载均衡, 🔗 链式代理, provider_one, provider_two, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 🚀 节点选择, type: select, proxies: [🪐 自动切换, 🌎 全球直连], <<: *u}
+  - {name: 🪐 自动切换, <<: [*url-test-Strategy, *u], filter: "(?i)^(?!.*emby).*"}
+  - {name: ☀️ 手动切换1, type: select, proxies: [🚀 节点选择, 🌎 全球直连], <<: *u}
+  - {name: 🌙 手动切换2, type: select, proxies: [🚀 节点选择, 🌎 全球直连], <<: *u}
+  - {name: ✨ 负载均衡, <<: *load-balance-consistent-hashing-Strategy, proxies: [🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国]}
+  - {name: 🔗 链式代理, <<: *relay-Strategy, proxies: [☀️ 手动切换1, 🌙 手动切换2]}
   - {name: provider_one, type: select, use: [1.provider]}
   - {name: provider_two, type: select, use: [2.provider]}
-  - {name: 🤖 AI, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 📲 Telegram, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 🍦 YouTube, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 🍿 Netflix, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 🧋 Bilibili, type: select, proxies: [🌟 总模式,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾]}
-  - {name: 🍨 EMBY, type: select, proxies: [🌟 总模式,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇺🇳 其它地区], <<: *u, filter: "(?i)emby|plex|media"}
-  - {name: 📸 TikTok, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: ✈️ Twitter, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 📢 Google, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  # - {name: Ⓜ️ Microsoft, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  # - {name: 🍎 Apple, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - {name: 🎮 Discord, type: select, proxies: [🌟 总模式,🪐 自动切换,☀️ 手动切换1,🌙 手动切换2,🌎 全球直连,🇭🇰 香港,🇨🇳 台湾,🇯🇵 日本,🇸🇬 新加坡,🇺🇸 美国,🇺🇳 其它地区]}
-  - { name: 📟 WebRTC, type: select, proxies: [ REJECT, REJECT-DROP, PASS ]}
-  - { name: 🧩 HTTP_DNS, type: select, proxies: [ REJECT, REJECT-DROP, PASS ]}
-  - {name: 🛑 隐私拦截, type: select, proxies: [REJECT,REJECT-DROP,PASS,🌟 总模式,🌎 全球直连]}
-  - {name: 🐋 漏网之鱼, type: select, proxies: [🌟 总模式,🌎 全球直连]}
+  - {name: 🤖 AI, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 📲 Telegram, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 🍦 YouTube, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 🍿 Netflix, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 🧋 Bilibili, type: select, proxies: [🌟 总模式, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾]}
+  - {name: 🍨 EMBY, type: select, proxies: [🌟 总模式, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇺🇳 其它地区], <<: *u, filter: "(?i)emby|plex|media"}
+  - {name: 📸 TikTok, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: ✈️ Twitter, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 📢 Google, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  # - {name: Ⓜ️ Microsoft, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  # - {name: 🍎 Apple, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 🎮 Discord, type: select, proxies: [🌟 总模式, 🪐 自动切换, ☀️ 手动切换1, 🌙 手动切换2, 🌎 全球直连, 🇭🇰 香港, 🇨🇳 台湾, 🇯🇵 日本, 🇸🇬 新加坡, 🇺🇸 美国, 🇺🇳 其它地区]}
+  - {name: 📟 WebRTC, type: select, proxies: [REJECT, REJECT-DROP, PASS]}
+  - {name: 🧩 HTTP_DNS, type: select, proxies: [REJECT, REJECT-DROP, PASS]}
+  - {name: 🛑 隐私拦截, type: select, proxies: [REJECT, REJECT-DROP, PASS, 🌟 总模式, 🌎 全球直连]}
+  - {name: 🐋 漏网之鱼, type: select, proxies: [🌟 总模式, 🌎 全球直连]}
   - {name: 🌎 全球直连, type: select, proxies: [DIRECT]}
   
   # 分隔，下面是地区分组
