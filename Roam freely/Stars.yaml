@@ -187,7 +187,7 @@ proxy-groups:
   - {name: 🇺🇳 其它地区, type: select, include-all-providers: true, filter: "(?i)^(?!.*(?:🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|emby)).*|.*(?:澳大利亚|australia)"}
      
   # 隐藏 延时选优组
-  - {name: 香港延时选优组,<<:  *url-test-Strategy, include-all-providers: true, hidden: true, filter: "(?i)(?=.*(?:港|hk|hongkong|hong\\s+kong))(?!.*(?:emby.*hk|hk.*emby))(?!.*(?:5x|专线|premium))"}
+  - {name: 香港延时选优组,<<: *url-test-Strategy, include-all-providers: true, hidden: true, filter: "(?i)(?=.*(?:港|hk|hongkong|hong\\s+kong))(?!.*(?:emby.*hk|hk.*emby))(?!.*(?:5x|专线|premium))"}
   - {name: 台湾延时选优组, <<: *url-test-Strategy, include-all-providers: true, hidden: true, filter: "(?i)(?=.*(?:台|tw|taiwan))(?!.*(?:5x|专线|premium))"}
   - {name: 日本延时选优组, <<: *url-test-Strategy, include-all-providers: true, hidden: true, filter: "(?i)(?=.*(?:日|jp|japan))(?!.*(?:5x|专线|premium))"}
   - {name: 新加坡延时选优组, <<: *url-test-Strategy, include-all-providers: true, hidden: true, filter: "(?i)(?=.*(?:新|sg|singapore))(?!.*(?:5x|专线|premium))"}
