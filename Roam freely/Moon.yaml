@@ -280,7 +280,7 @@ rule-providers:
     url: "https://ruleset.skk.moe/Clash/domainset/reject.txt"
     path: ./sukkaw_ruleset/reject_domainset.txt
   reject_ip:
-    <<: *rule_classical
+    <<: *rule_ipcidr
     format: text
     url: "https://ruleset.skk.moe/Clash/ip/reject.txt"
     path: ./sukkaw_ruleset/reject_ip.txt
