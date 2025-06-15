@@ -683,7 +683,7 @@ rule-providers:
   reject_ip:
     type: http
     interval: 86400
-    behavior: classical
+    behavior: ipcidr
     format: text
     url: "https://ruleset.skk.moe/Clash/ip/reject.txt"
     path: ./sukkaw_ruleset/reject_ip.txt
