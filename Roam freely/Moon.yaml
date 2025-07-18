@@ -301,7 +301,7 @@ rule-providers:
     <<: *rule_domain
     format: mrs
     path: ./rule_providers/domain/category-httpdns-cn
-    url: 'https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-httpdns-cn.mrs'
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-httpdns-cn.mrs"
               
 rules:
   # - AND,((PROCESS-NAME,mihomo),(NOT,((IN-TYPE,inner)))),REJECT
